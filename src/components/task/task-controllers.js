@@ -10,6 +10,15 @@ export async function index (ctx) {
   }
 }
 
+export async function indexFromList (ctx) {
+  try {
+    const tasks = await Task.find({ list: ctx.params.list  })
+    ctx.ok(tasks)
+  } catch (e) {
+    ctx.badRequest({ message: e.message })
+  }
+} 
+
 export async function id (ctx) {
   try {
     if(ctx.params.id.length <= 0) return ctx.notFound({ message: 'Id missing, task ressource not found' })
