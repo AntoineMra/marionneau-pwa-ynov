@@ -18,14 +18,14 @@
       <q-toolbar class="flex flex-center">
         <q-tabs>
           <q-route-tab
-            :to="{ query: { tab: '1' } }"
+            :to="''"
             exact
             replace
             icon="subject"
           />
-          <q-route-tab :to="{ query: { tab: '2' } }" exact replace icon="add" />
+          <q-route-tab :to="'list/add'" exact replace icon="add" />
           <q-route-tab
-            :to="{ query: { tab: '3' } }"
+            :to="''"
             exact
             replace
             icon="person"

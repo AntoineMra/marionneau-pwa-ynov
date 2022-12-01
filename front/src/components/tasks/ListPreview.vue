@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div v-if="!tasks">
-      Cette liste ne contient aucune tâches ajoutez en une depuis la liste
+    <div v-if="tasks === []">
+      <p>
+        Cette liste ne contient aucune tâches ajoutez en une depuis la liste
+      </p>
     </div>
     <div v-else v-for="task in props.tasks" :key="task._id">
       <h1>{{ task.title }}</h1>
@@ -11,12 +13,13 @@
 
 <script setup>
 import { defineProps, ref, onMounted } from "vue";
+import { api } from "../../boot/axios";
 
-let taskLists = ref([]);
+let tasks = ref([]);
 
-const fetchLists = () => {
-  api.get("/tasks").then((res) => {
-    taskLists = res.data;
+const fetchTasks = () => {
+  api.get(`/tasks/list/${props.listId}`).then((res) => {
+    tasks = JSON.stringify(res.data);
   });
 };
 
@@ -29,5 +32,5 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 </style>
