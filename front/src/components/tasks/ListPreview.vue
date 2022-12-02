@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { api } from "../../boot/axios";
 
 let tasks = ref([]);
