@@ -20,8 +20,7 @@ const $router = useRouter()
 const listStore = useListStore()
 
 const formSubmit = () => {
-    console.log(title);
-    listStore.addList(title)
+    listStore.addList(title.value)
     $router.push({path: ''})
 }
 

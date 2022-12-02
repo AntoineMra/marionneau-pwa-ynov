@@ -5,7 +5,7 @@
       <div v-if="!taskLists.length">
         <h2 class="subtitle">Il est temps d'ajouter des listes</h2>
       </div>
-      <div v-else v-for="tl in taskLists" :key="tl._id">
+      <div class="flex flex-center list-container" v-else v-for="tl in taskLists" :key="tl._id">
         <TaskList :task-list="tl" />
       </div>
     </div>
@@ -13,18 +13,18 @@
 </template>
 
 <script setup>
-import {onMounted, onUpdated } from "vue";
+import {onMounted, ref } from "vue";
 import TaskList from "../components/index/TaskList.vue";
 import { api } from "../boot/axios";
 import { useListStore } from '../stores/list-store'
-import { mapState } from "pinia";
 
 const listStore = useListStore()
-const taskLists = mapState(useListStore, ['taskLists'])
+const taskLists = ref([])
 
 onMounted(() => {
   api.get("/lists").then((res) => {
-    listStore.$patch({taskLists: res.data})
+    taskLists.value = res.data
+    listStore.$patch({taskLists: taskLists.value})
   });
 });
 
@@ -34,5 +34,10 @@ onMounted(() => {
 .subtitle{
   font-size: 2rem;
   text-align: center;
+}
+
+.list-container{
+  width: 75%;
+  border-radius: 15px;
 }
 </style>

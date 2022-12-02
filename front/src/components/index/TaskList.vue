@@ -6,7 +6,7 @@
     <div class="list-body">
       <ListPreview :listId="props.taskList._id" />
     </div>
-    <footer class="footer">
+    <footer class="footer flex flex-center footer">
       <q-btn :to="'/list/' + props.taskList._id">Voir la liste complète</q-btn>
     </footer>
   </div>
@@ -27,6 +27,7 @@ const props = defineProps({
   margin-top: 20px;
   width: 100%;
   display: block;
+  border-radius: 15px;
 }
 
 .header {
@@ -35,10 +36,13 @@ const props = defineProps({
   justify-content: center;
   width: 100%;
   background-color: #ccc;
+    border-radius: 15px 15px 0 0;
+
 }
 
 .footer {
   margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .task-title {
