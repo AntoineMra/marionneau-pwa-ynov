@@ -9,8 +9,8 @@
         </header>
 
         <div class="body-page">
-            <TaskSection :tasks="tasks" :completed="false"/>
-            <TaskSection :tasks="tasks" :completed="true"/>            
+            <TaskSection :tasks="taskStore.tasks" :completed="false"/>
+            <TaskSection :tasks="taskStore.tasks" :completed="true"/>            
         </div>
     </main>  
 </template>
@@ -19,16 +19,17 @@
 import { ref, onMounted } from "vue";
 import { api } from "../boot/axios";
 import { useRoute } from 'vue-router'
-import { useListStore } from '../stores/list-store'
 import TaskSection from '../components/tasks/TaskSection.vue'
+import { useTaskStore } from "src/stores/task-store";
+
+const taskStore = useTaskStore()
 
 const listId = useRoute().params.id
 const list = ref({})
-let tasks = ref([])
 
 const fetchTasks = () => {
   api.get(`/tasks/list/${listId}`).then((res) => {
-    tasks.value = res.data;
+    taskStore.$patch({tasks: res.data})
   });
 };
 

@@ -3,7 +3,7 @@
     <h2 class="title">Tasks {{props.completed ? 'Completed' : ''}} - {{sortedTasks.length}}</h2>
     <ul class="list">
       <li class="item" v-for="task in sortedTasks">
-        <SingleTask :task="task"/>
+        <SingleTask :task="task" :key="task"/>
       </li>
     </ul>
   </div>

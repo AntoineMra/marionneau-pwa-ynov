@@ -8,16 +8,16 @@
 </template>
 
 <script setup>
-import { api } from "../../boot/axios";
+import { useTaskStore } from "src/stores/task-store";
+
+const taskStore = useTaskStore()
 
 const props = defineProps({
   task: Object,
 });
 
-const changeCompletion = (e) => {
-    api.get(`/tasks/list/${listId}`).then((res) => {
-        tasks.value = res.data;
-    });
+const changeCompletion = () => {
+    taskStore.changeTaskStatus(props.task)
 }
 </script>
 

@@ -7,11 +7,16 @@ export const useTaskStore = defineStore('task', {
   },
   actions: {
     addTask(task) {
-      api.post("/task",task).then(res => this.taskLists.push(res.data))
+      api.post("/tasks",task).then(res => this.taskLists.push(res.data))
     },
     changeTaskStatus(task) {
-      task.done = !task.done
-      api.put(`/tasks/${task.id}`,{done: task.done}).then(res => res.status === 200 ?? new Error(res.status))
+      api.put(`/tasks/${task._id}`,{
+        title: task.title,
+        list: task.list,
+        done: !task.done})
+      .then(res => res.status === 200 ?? new Error(res.status))
+      const newTask = this.tasks.findIndex((t => t._id == task._id));
+      this.tasks[newTask].done = !task.done
     },
   },
 })
