@@ -10,23 +10,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import SingleTask from "./SingleTask.vue";
 
-let sortedTasks = ref([])
+let sortedTasks = ref(props.tasks.filter(task => task.done === props.completed))
 
-const getCompletedTask = () => {
-  sortedTasks.value = props.tasks.filter(task => task.done === props.completed)
-};
+console.log(sortedTasks);
 
 const props = defineProps({
   completed: Boolean,
   tasks: Array
 });
-
-onMounted(() => {
-    getCompletedTask()
-})
 
 </script>
 

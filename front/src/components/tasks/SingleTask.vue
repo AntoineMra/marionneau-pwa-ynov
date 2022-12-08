@@ -1,24 +1,29 @@
 <template>
   <div class="task-container"> 
     <form class="flex">
-      <input class="input" type="checkbox" v-model="props.task.done" @click="changeCompletion">
+      <input class="input" type="checkbox" v-model="props.task.done" @click="changeTaskStatus">
       <label class="title" :class="{ crossed: props.task.done}">{{task.title}}</label>
     </form>
   </div>
 </template>
 
 <script setup>
-import { useTaskStore } from "src/stores/task-store";
 
-const taskStore = useTaskStore()
 
 const props = defineProps({
   task: Object,
 });
 
-const changeCompletion = () => {
-    taskStore.changeTaskStatus(props.task)
+
+const changeTaskStatus = (task) => {
+  api.put(`/tasks/${task._id}`,{
+    title: task.title,
+    list: task.list,
+    done: !task.done})
+  .then(res => res.status === 200 ?? new Error(res.status))
+  window.location.reload();
 }
+
 </script>
 
 <style lang="scss" scoped>
