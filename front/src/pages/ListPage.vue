@@ -2,13 +2,13 @@
     <main class="main">
         <header class="flex header">
             <span class="flex flex-center">
-                <q-btn color="secondary" icon="arrow_back_ios" :to="'/'"/>
+                <q-btn class="arrow" color="secondary" icon="arrow_back_ios" :to="'/'"/>
                 <h1 class="title">{{list.title}}</h1>
             </span>
             <q-btn class="dots" color="secondary" icon="more_horiz" />
         </header>
 
-        <div class="body-page" v-if="!tasks.length">
+        <div class="body-page" v-if="tasks.length">            
             <TaskSection :tasks="tasks" :completed="false"/>
             <TaskSection :tasks="tasks" :completed="true"/>            
         </div>
@@ -19,42 +19,23 @@
             </div>
         </footer>
 
-        <q-btn label="Add task" color="primary" @click="prompt = true" />
-
-        <q-dialog v-model="prompt" persistent>
-            <q-card style="min-width: 350px">
-                <q-card-section>
-                    <div class="text-h6">Your new task</div>
-                </q-card-section>
-
-                <q-card-section class="q-pt-none">
-                    <q-input dense v-model="task" autofocus @keyup.enter="addTask" />
-                </q-card-section>
-
-                <q-card-actions align="right" class="text-primary">
-                    <q-btn flat label="Cancel" v-close-popup />
-                    <q-btn flat label="Add task" v-close-popup />
-                </q-card-actions>
-            </q-card>
-        </q-dialog>
+        <q-btn label="Add task" color="primary" :to="'/list/' + listId + '/add'" />
     </main>  
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount, reactive } from "vue";
 import { api } from "../boot/axios";
 import { useRoute } from 'vue-router'
 import TaskSection from '../components/tasks/TaskSection.vue'
 
 const listId = useRoute().params.id
-const list = ref({})
+let list = reactive({})
 let tasks = ref([])
-const prompt = ref(false)
-const task = ref('')
 
 const fetchTasks = () => {
   api.get(`/tasks/list/${listId}`).then((res) => {
-    tasks = res.data
+    tasks.value = res.data
   });
 };
 
@@ -64,15 +45,12 @@ const getList = () => {
   });
 };
 
-const addTask = () => {
-    api.post("/tasks",{name: task}).then(res => tasks.value.push(res.data))
-    prompt.value = false
-}
+onBeforeMount(() => {
+        getList();
+        fetchTasks();
+    }
+)
 
-onMounted(() => {
-    getList();
-    fetchTasks();
-});
 </script>
 
 <style lang="scss" scoped>
@@ -102,6 +80,11 @@ onMounted(() => {
 }
 
 .dots{
+    color: #000 !important;
     background-color: transparent !important;
+}
+
+.arrow{
+    color: #000 !important;
 }
 </style>

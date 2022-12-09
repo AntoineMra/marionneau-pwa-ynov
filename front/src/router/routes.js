@@ -6,6 +6,8 @@ const routes = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'list/:id', component: () => import('pages/ListPage.vue') },
       { path: 'list/add', component: () => import('pages/AddListe.vue') },
+      { path: 'list/:id/add', component: () => import('pages/AddTask.vue') },
+      { path: 'task/:id', component: () => import('pages/TaskDetail.vue') },
     ]
   },
 
