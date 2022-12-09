@@ -2,33 +2,40 @@
     <main class="main">
         <header class="flex header">
             <span class="flex flex-center">
-                <q-btn color="secondary" icon="arrow_back_ios" :to="'/'"/>
+                <q-btn class="arrow" color="secondary" icon="arrow_back_ios" :to="'/'"/>
                 <h1 class="title">{{list.title}}</h1>
             </span>
             <q-btn class="dots" color="secondary" icon="more_horiz" />
         </header>
 
-        <div class="body-page">
+        <div class="body-page" v-if="tasks.length">            
             <TaskSection :tasks="tasks" :completed="false"/>
             <TaskSection :tasks="tasks" :completed="true"/>            
         </div>
+
+        <footer v-else>
+            <div>
+                <h2>There is no tasks in this list, you might want to add some below</h2>
+            </div>
+        </footer>
+
+        <q-btn label="Add task" color="primary" :to="'/list/' + listId + '/add'" />
     </main>  
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount, reactive } from "vue";
 import { api } from "../boot/axios";
 import { useRoute } from 'vue-router'
-import { useListStore } from '../stores/list-store'
 import TaskSection from '../components/tasks/TaskSection.vue'
 
 const listId = useRoute().params.id
-const list = ref({})
+let list = reactive({})
 let tasks = ref([])
 
 const fetchTasks = () => {
   api.get(`/tasks/list/${listId}`).then((res) => {
-    tasks.value = res.data;
+    tasks.value = res.data
   });
 };
 
@@ -38,10 +45,12 @@ const getList = () => {
   });
 };
 
-onMounted(() => {
-    getList();
-    fetchTasks();
-});
+onBeforeMount(() => {
+        getList();
+        fetchTasks();
+    }
+)
+
 </script>
 
 <style lang="scss" scoped>
@@ -71,6 +80,11 @@ onMounted(() => {
 }
 
 .dots{
+    color: #000 !important;
     background-color: transparent !important;
+}
+
+.arrow{
+    color: #000 !important;
 }
 </style>

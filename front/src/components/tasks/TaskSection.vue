@@ -3,30 +3,24 @@
     <h2 class="title">Tasks {{props.completed ? 'Completed' : ''}} - {{sortedTasks.length}}</h2>
     <ul class="list">
       <li class="item" v-for="task in sortedTasks">
-        <SingleTask :task="task"/>
+        <SingleTask :task="task" :key="task"/>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import SingleTask from "./SingleTask.vue";
 
-let sortedTasks = ref([])
+let sortedTasks = ref(props.tasks.filter(task => task.done === props.completed))
 
-const getCompletedTask = () => {
-  sortedTasks.value = props.tasks.filter(task => task.done === props.completed)
-};
+console.log(sortedTasks);
 
 const props = defineProps({
   completed: Boolean,
   tasks: Array
 });
-
-onMounted(() => {
-    getCompletedTask()
-})
 
 </script>
 
